@@ -20,9 +20,22 @@ L.Icon.Default.mergeOptions(
 
 export default {
   name: 'OpenDataMap',
+  data() {
+    return {
+      path: 'https://script.google.com/macros/s/AKfycbzTPV0C4y8EV6JJ6gD8FGEGZAj4xggWerrVC9q8ZkFw_EmcvWSAKIaFWa8kthhG_mgCmg/exec'
+    }
+  },
   methods: {
     getMarker: () => {
-      // axios.get(path, request).then(response => {}).catch(error => {console.log(error)})
+      const request = {
+        headers: { 'Content-Type': 'application/json' },
+        response: true
+      }
+      axios.get(this.path, request).then(response => {
+        console.log(response)
+      }).catch(error => {
+        console.log(error)
+      })
       return [[39.19767, 141.188945],[39.195669, 141.188779],[39.154929, 141.359271]]
     }
   },

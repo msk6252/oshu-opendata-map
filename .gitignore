@@ -1,9 +1,9 @@
-.DS_Store
-node_modules/
-/dist/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+frontend/.DS_Store
+frontend/node_modules/
+frontend//dist/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
 
 # Editor directories and files
 .idea
@@ -22,10 +22,10 @@ yarn-error.log*
 # Recommended template: Node.gitignore
 
 # TODO: where does this rule come from?
-docs/_book
+frontend/docs/_book
 
 # TODO: where does this rule come from?
-test/
+frontend/test/
 
 # End of https://www.toptal.com/developers/gitignore/api/vue
 
@@ -35,9 +35,19 @@ test/
 ### Vuejs ###
 # Recommended template: Node.gitignore
 
-node_modules/
-dist/
-npm-debug.log
-yarn-error.log
+frontend/node_modules/
+frontend/dist/
+frontend/npm-debug.log
+frontend/yarn-error.log
 
 # End of https://www.toptal.com/developers/gitignore/api/vuejs
+
+# Created by https://www.toptal.com/developers/gitignore/api/serverless
+# Edit at https://www.toptal.com/developers/gitignore?templates=serverless
+
+### Serverless ###
+# Ignore build directory
+backend/.serverless
+backend/node_modules
+
+# End of https://www.toptal.com/developers/gitignore/api/serverless
