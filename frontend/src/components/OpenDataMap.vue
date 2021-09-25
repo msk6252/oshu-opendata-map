@@ -22,36 +22,49 @@ export default {
   name: 'OpenDataMap',
   data() {
     return {
-      path: 'https://script.google.com/macros/s/AKfycbzTPV0C4y8EV6JJ6gD8FGEGZAj4xggWerrVC9q8ZkFw_EmcvWSAKIaFWa8kthhG_mgCmg/exec'
+      path: 'https://880ekvckqk.execute-api.ap-northeast-1.amazonaws.com/production/?info=SHELTER',
+      responseData: []
     }
   },
   methods: {
-    getMarker: () => {
+    getData: async function() {
       const request = {
         headers: { 'Content-Type': 'application/json' },
         response: true
       }
-      axios.get(this.path, request).then(response => {
-        console.log(response)
+      await axios.get(this.path, request).then(response => {
+        this.responseData = response.data
       }).catch(error => {
         console.log(error)
       })
-      return [[39.19767, 141.188945],[39.195669, 141.188779],[39.154929, 141.359271]]
     }
   },
-  mounted() {
-    let map = L.map( 'app', { center: L.latLng( 39.14481501086482, 141.13926409203623 ), zoom: 12 } ).addLayer(
-      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png')
-    )
-    this.getMarker().forEach(ele => {
-      let marker = map.addLayer( L.marker(ele) )
-      map.on('click', (e) => {
-        let popup = L.popup()
-        popup
-          .setLatLng(e.latlng)
-          .setContent("<p>クリックで表示される</p>")
-          .openOn(map)
+  async mounted() {
+    let map = L.map( 'app', {
+                              center: [39.14481501086482, 141.13926409203623],
+                              closePopupOnClick: false,
+                              zoom: 12
+                            } )
+
+    let osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: "<a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+    })
+    osm.addTo(map)
+
+    await this.getData()
+    await this.responseData.forEach(ele => {
+      let popup = L.popup({
+        autoClose: false
       })
+      popup.setContent(
+                       `<h4>${ele.name}</h4>` +
+                       `推定収容人数: ${ele.capacity == 0 ? '不明' : ele.capacity + '人'}<br />` +
+                       `海抜: ${ele.ele}m<br />` +
+                       `住所: <a target="_blank" href="https://www.google.com/maps/search/?api=1&query=${ele.lat},${ele.lon}">${ele.address}`
+                       )
+      let marker = L.marker([ele.lat, ele.lon])
+      marker.bindPopup(popup)
+      marker.addTo(map)
     })
   }
 }
